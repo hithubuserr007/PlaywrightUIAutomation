@@ -1,0 +1,21 @@
+//Launch the local browser in Playwright with Java
+//User can launch the local browser instead of downloading playwright browser each time. Some organization have policies that they cant allow to download external files so in that case you can launch local installed browser with below code
+
+public void launch_chrome_browser(){
+        String pathToChrome ="C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width =screenSize.getWidth();
+        double height = screenSize.getHeight();
+        Map<String, String> env = new HashMap<>();
+        env.put("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1");
+        Playwright.CreateOptions createOptions = new Playwright.CreateOptions();
+        createOptions.setEnv(env);
+        Playwright playwright = Playwright.create(createOptions);
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions()
+                .setExecutablePath(Paths.get(pathToChrome))
+                .setHeadless(false)
+                .setChromiumSandbox(true));
+        browserContext = browser.newContext(new Browser.NewContextOptions().setViewportSize((int) width, (int) height));
+        page= browserContext.newPage();
+
+    }
